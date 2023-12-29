@@ -15,16 +15,30 @@ if (leadsFromLocalStorage) {
 
 
 function render(notes) {
-    let listItems = ""
+    ulEl.innerHTML = ""
     for (let i = 0; i < notes.length; i++) {
-        listItems += `
-            <li>
-                ${notes[i]}
-            </li>
-        `
+        const liElement = document.createElement('li')      // <li></li>
+        liElement.classList = "note-single"                 // <li class="note-single"></li>
+        liElement.innerText = notes[i]                      // <li class="note-single">bread</li>
+        ulEl.appendChild(liElement)
+
+        liElement.addEventListener('click', function () {
+            const clickedNote = notes[i];
+            // Remove the clicked note from localStorage
+            // const newNotes = myNotes.filter(note => note !== clickedNote);
+            let newNotes = []
+            for (let j = 0; j < myNotes.length; j++) {
+                if (myNotes[j] !== clickedNote) {
+                    newNotes.push(myNotes[j])
+                }
+            }
+            myNotes = newNotes
+            localStorage.setItem("myNotes", JSON.stringify(newNotes));
+            render(newNotes)
+        })
     }
-    ulEl.innerHTML = listItems
 }
+
 
 
 
